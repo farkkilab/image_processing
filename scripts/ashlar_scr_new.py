@@ -26,7 +26,7 @@ for subfolder in subfolders:
     output_path2 = os.path.join(output_path, file_name)
     #print(output_path)
     #get files and format them
-    files = [f for f in listdir(subfolder) if search('nd2', f)]
+    files = [f for f in listdir(subfolder) if search('rcpnl', f)]
     print(files)
     for file in files:
         print(file)
@@ -35,7 +35,7 @@ for subfolder in subfolders:
 
     print(files_to_stitch)
     files_to_stitch = files_to_stitch.rstrip() 
-    cmd= "ashlar {} -o\"{}\" --flip-x --pyramid --filter-sigma 1 -m 30".format(files_to_stitch,output_path2)
+    cmd= "ashlar {} -o\"{}\" --pyramid --filter-sigma 1 -m 30".format(files_to_stitch,output_path2)
     print(cmd)
     os.system(cmd)
 
