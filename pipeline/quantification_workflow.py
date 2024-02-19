@@ -1,5 +1,5 @@
 # Instructions to run this script when processing multiple images in one folder:
-# conda env create -n quant -f quantification.yml
+# conda env create -n quant -f quantification.yml # only when no environment installed
 # conda activate quant
 # python quantification_loop.py -o <output dir> -ch <channel dir> -c 46
 
@@ -134,9 +134,7 @@ if __name__ == '__main__':
 		print('Current mask is {}'.format(CURRENT_MASK))
 
 		IMAGEPATH = imagePath
-
 		scdata = imageQuantification(masks_loaded, args.threads)
-		
 		output = Path(args.outputFolder)
 		im_full_name = os.path.basename(imagePath)
 		print(imagePath)
