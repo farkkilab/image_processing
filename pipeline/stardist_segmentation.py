@@ -29,10 +29,10 @@ from stardist.models import StarDist2D
 
 # input path must only have the images to segment
 # output path should be an empty folder
-INPUT_PATH = "P://afarkkilab//Projects//NKI//Whole_slides_validation_MHCII_Ada//Test//images"
-OUTPUT_PATH = "/stardist_output/"
-x = 8 # x number of tiles
-y = 8 # y number of tiles
+INPUT_PATH = "L://Projects//CyCIF//NKI_images_temporary_storage//stitched"
+OUTPUT_PATH = "L://Projects//CyCIF//NKI_images_temporary_storage//stardist_output"
+# x = 8 # x number of tiles
+# y = 8 # y number of tiles
 arr = os.listdir(INPUT_PATH)
 model_name = '2D_versatile_fluo'
 
@@ -45,21 +45,27 @@ if __name__ == '__main__':
         a = input("Do you want to proceed? [y/n]")
         if a=="y":
             for image in arr:
+
                 image_name = image
                 sep = '.'
                 imageid = image_name.split(sep, 1)[0]
+                print("Imageid = {}".format(imageid))
+
                 IMAGE_PATH = os.path.join(INPUT_PATH, image_name)
                 print("reading image {}".format(IMAGE_PATH))
-
                 img = tifffile.imread(IMAGE_PATH)
+                print("Finish reading image {}".format(IMAGE_PATH))
                 img = img[0]
                 print("Image has a shape of {}".format(img.shape))
 
-                labels, _ = model.predict_instances(normalize(img), n_tiles=(x, y))
+                tiles = int(math.sqrt(int(img.shape[0]*img.shape[1]/(4781712.046875))))
+                print("Calculate tiles = {}".format(tiles))
+                labels, _ = model.predict_instances(normalize(img), n_tiles=(tiles, tiles))
                 labels = labels.astype("int32")
                 output_name = OUTPUT_PATH + imageid + "_labels" + ".ome.tiff"
                 tifffile.imsave(output_name, labels)
                 print("Finish image {}".format(IMAGE_PATH))
+
             continue
         elif a=="n":
             break
