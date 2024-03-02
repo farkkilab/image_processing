@@ -1,8 +1,8 @@
 # Image_processing
 
-This repository stores image processing scripts for Färkkilä lab, including stitching-segmentation-quantification steps.
+This repository stores image processing scripts for Färkkilä lab, including stitching-segmentation-quantification steps. 
 
-![1709384151551](https://file+.vscode-resource.vscode-cdn.net/c%3A/Users/Public/Farkkila_lab_codes/image_processing/image/README/1709384151551.png)
+![Image processing workflow](./image_workflow.png)
 
 ## Preparation
 
