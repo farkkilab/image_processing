@@ -1,9 +1,11 @@
-# Instructions to run this on one sample:
-# conda env create -n quant -f quantification.yml
+# Instructions to run this script when processing multiple images in one folder:
+# conda env create -n quant -f quantification.yml # only when no environment installed
 # conda activate quant
-# python quantification.py -M /data/s3segmenter_output/Sample_01/cellMask.tif -in /data/raw/scset/Sample_01.ome.tif -o /data/projects/casado/scset/quantification/ -ch /data/projects/casado/scset/channel_names.csv -c 46 
+# python quantification_loop.py -o <output dir> -ch <channel dir> -c 46
+
 # If you find bugs, contact Ziqi <ziqi.kang@helsinki.fi>. :]
 # This script is based on Julia's script <julia.casado@helsinki.fi>. 
+
 import os
 import argparse
 from pathlib import Path
@@ -17,8 +19,8 @@ import multiprocessing as mp
 import tifffile
 from functools import partial
 
-dir2 = 'C://Users//Public//Farkkila_lab_datasets//Ada_dataset//quantification_sample//masks'
-dir1 = 'C://Users//Public//Farkkila_lab_datasets//Ada_dataset//quantification_sample//image'
+dir2 = '/home/oncosys/Public/NKI_images/masks' # replace it with your own mask dir
+dir1 = '/home/oncosys/Public/NKI_images/image' # replace it with your own image dir
 
 global iPath
 global mPath
@@ -36,29 +38,25 @@ for filename in os.listdir(dir1):
         if filename.endswith(".tif") or filename.endswith(".tiff"):
                 iPath = os.path.join(dir1, filename)
                 ips.append(iPath)
+                ips = sorted(ips)
         
 for maskname in os.listdir(dir2):
         if maskname.endswith(".tif") or maskname.endswith(".tiff"):
                 mPath = os.path.join(dir2, maskname)
                 mps.append(mPath)
 
-for i in range(len(ips)):
-	maskPaths = [sorted(mps)[i]]
-	maskPath = sorted(mps)[i]
-	imagePath = sorted(ips)[i]
-
-def channelQuantification(channelNamesFile, channel):
+def channelQuantification(channelNamesFile, maskPaths, imagePath, channel):
 	channel_image_loaded = tifffile.imread(imagePath, key = channel)
 	print("channelQuantification step, channel names file is {}, read in channel {}".format(channelNamesFile, channel))
 
-	mask_loaded = tifffile.imread(maskPath)
+	mask_loaded = tifffile.imread(maskPaths)
 	if channel == 0:
 		props = MORPH_PROPS + CHANNEL_PROPS
 	else:
 		props = CHANNEL_PROPS
 	properties = measure.regionprops_table(mask_loaded, channel_image_loaded, properties=props)
 	result = pd.DataFrame(properties)
-	result.rename(columns={'mean_intensity':checkChannelNames(channelNamesFile)[channel], 'label':'ID', 'centroid-0':'X Position', 'centroid-1':'Y Position', 'area':'Area', 'eccentricity':'Eccentricity'},inplace=True)
+	result.rename(columns={'mean_intensity':checkChannelNames(channelNamesFile)[channel], 'label':'CellID', 'centroid-0':'Y_centroid', 'centroid-1':'X_centroid', 'area':'Area', 'eccentricity':'Eccentricity'},inplace=True)
 
 	return result
 
@@ -68,7 +66,8 @@ def imageQuantification(masks_loaded,threads):
 	pool = mp.Pool(threads)
 	print('Length of channels: {}'.format(len(checkChannelNames(args.channelNamesFile))))
 
-	res = pool.map(partial(channelQuantification, args.channelNamesFile), range(len(checkChannelNames(args.channelNamesFile))))
+	res = pool.map(partial(channelQuantification, args.channelNamesFile, maskPaths, imagePath), 
+		range(len(checkChannelNames(args.channelNamesFile))))
 	pool.close()
 	pool.join()
 
@@ -81,14 +80,17 @@ def imageQuantification(masks_loaded,threads):
 			CURRENT_MASK = masks_loaded[mask_names[mask]] 
 				# New pool for each time we modify the global variable: 'CURRENT_MASK'
 			pool = mp.Pool(threads)
-			res = pool.map(partial(channelQuantification, args.channelNamesFile), range(len(checkChannelNames(args.channelNamesFile))))
+			res = pool.map(partial(channelQuantification, args.channelNamesFile, maskPaths, imagePath), 
+		  range(len(checkChannelNames(args.channelNamesFile))))
 			pool.close()
 			pool.join()
 			result[mask] = pd.concat(res)
 			#Concatenate all data from all masks to return
 		merged_data = pd.concat([result[mask] for mask in mask_names],axis=1)
+		merged_data = merged_data.reindex(columns = merged_data.columns.tolist() + ['MajorAxisLength','MinorAxisLength','Solidity', 'Extent'])
 	else:
 		merged_data = result[mask_names[0]]
+		merged_data = merged_data.reindex(columns = merged_data.columns.tolist() + ['MajorAxisLength','MinorAxisLength','Solidity', 'Extent'])
 	return merged_data
 
 def checkChannelNames(channel_names):
@@ -113,31 +115,35 @@ if __name__ == '__main__':
 	parser.add_argument('--outputFolder','-o')
 	parser.add_argument('--threads','-c',type=int)
 	args = parser.parse_args() 
-	print(args.channelNamesFile)
+	# print(args.channelNamesFile)
 
 	t = time.time()
 	CHANNELS = checkChannelNames(args.channelNamesFile)
 	print('Channels are {}'.format(CHANNELS))
 
-	masks_loaded = {}
-	for m in maskPaths:
-		m_full_name = os.path.basename(m)
-		m_name = m_full_name.split('.')[0]
-		masks_loaded.update({str(m_name):skimage.io.imread(m,plugin='tifffile')})
-	CURRENT_MASK = masks_loaded[list(masks_loaded.keys())[0]] # load first mask to run by default unless there are more
-	print('Current mask is {}'.format(CURRENT_MASK))
+	for i in range(len(ips)):	
+		maskPaths = [sorted(mps)[i]]
+		imagePath = ips[i]
+		print('imagePath is {}'.format(imagePath))
 
-	IMAGEPATH = imagePath
-	print(IMAGEPATH)
+		masks_loaded = {}
+		for m in maskPaths:
+			print('maskpath is {}'.format(m))
+			m_full_name = os.path.basename(m)
+			m_name = m_full_name.split('.')[0]
+			print('m name is {}'.format(m_name))
+			masks_loaded.update({str(m_name):skimage.io.imread(m,plugin='tifffile')})
+		CURRENT_MASK = masks_loaded[list(masks_loaded.keys())[0]] # load first mask to run by default unless there are more
+		print('Current mask is {}'.format(CURRENT_MASK))
 
-	scdata = imageQuantification(masks_loaded, args.threads)
-	
-	output = Path(args.outputFolder)
-	im_full_name = os.path.basename(imagePath)
-	print(imagePath)
+		IMAGEPATH = imagePath
+		scdata = imageQuantification(masks_loaded, args.threads)
+		output = Path(args.outputFolder)
+		im_full_name = os.path.basename(imagePath)
+		print(imagePath)
 
-	im_name = im_full_name.split('.')[0]
-	scdata.to_csv(str(Path(os.path.join(str(args.outputFolder),str(im_name+".csv")))),index=False)
-	print('Sample {} quantified in {:.2f} seconds'.format(im_name, time.time() - t))
+		im_name = im_full_name.split('.')[0]
+		scdata.to_csv(str(Path(os.path.join(str(args.outputFolder),str(im_name+".csv")))),index=False)
+		print('Sample {} quantified in {:.2f} seconds'.format(im_name, time.time() - t))
 
 	#EOF
