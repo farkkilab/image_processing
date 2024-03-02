@@ -1,0 +1,6 @@
+name: quantif
+dependencies:
+  - scikit-image 
+  - pandas
+  - numpy
+  - pathlib

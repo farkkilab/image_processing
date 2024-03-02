@@ -19,8 +19,8 @@ import multiprocessing as mp
 import tifffile
 from functools import partial
 
-dir2 = 'C://Users//Public//Farkkila_lab_datasets//Ada_dataset//quantification_sample//masks' # replace it with your own mask dir
-dir1 = 'C://Users//Public//Farkkila_lab_datasets//Ada_dataset//quantification_sample//image' # replace it with your own image dir
+dir2 = '/home/oncosys/Public/NKI_images/masks' # replace it with your own mask dir
+dir1 = '/home/oncosys/Public/NKI_images/image' # replace it with your own image dir
 
 global iPath
 global mPath
@@ -38,6 +38,7 @@ for filename in os.listdir(dir1):
         if filename.endswith(".tif") or filename.endswith(".tiff"):
                 iPath = os.path.join(dir1, filename)
                 ips.append(iPath)
+                ips = sorted(ips)
         
 for maskname in os.listdir(dir2):
         if maskname.endswith(".tif") or maskname.endswith(".tiff"):
@@ -55,7 +56,7 @@ def channelQuantification(channelNamesFile, maskPaths, imagePath, channel):
 		props = CHANNEL_PROPS
 	properties = measure.regionprops_table(mask_loaded, channel_image_loaded, properties=props)
 	result = pd.DataFrame(properties)
-	result.rename(columns={'mean_intensity':checkChannelNames(channelNamesFile)[channel], 'label':'ID', 'centroid-0':'X Position', 'centroid-1':'Y Position', 'area':'Area', 'eccentricity':'Eccentricity'},inplace=True)
+	result.rename(columns={'mean_intensity':checkChannelNames(channelNamesFile)[channel], 'label':'CellID', 'centroid-0':'Y_centroid', 'centroid-1':'X_centroid', 'area':'Area', 'eccentricity':'Eccentricity'},inplace=True)
 
 	return result
 
@@ -86,8 +87,10 @@ def imageQuantification(masks_loaded,threads):
 			result[mask] = pd.concat(res)
 			#Concatenate all data from all masks to return
 		merged_data = pd.concat([result[mask] for mask in mask_names],axis=1)
+		merged_data = merged_data.reindex(columns = merged_data.columns.tolist() + ['MajorAxisLength','MinorAxisLength','Solidity', 'Extent'])
 	else:
 		merged_data = result[mask_names[0]]
+		merged_data = merged_data.reindex(columns = merged_data.columns.tolist() + ['MajorAxisLength','MinorAxisLength','Solidity', 'Extent'])
 	return merged_data
 
 def checkChannelNames(channel_names):
