@@ -2,7 +2,7 @@
 
 This repository stores image processing scripts for Färkkilä lab, including stitching-segmentation-quantification steps. 
 
-![Image processing workflow](./image_workflow.png)
+![Image processing workflow](./image_workflow_new.png)
 
 ## Preparation
 
