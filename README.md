@@ -8,7 +8,7 @@ The Illumination correction picture is from: A BaSiC Tool for Background and Sha
 
 ## Preparation
 
-You should have conda installed on you device. Recommend miniconda. Create environment based on the yml files under folder ``envs``.
+You should have Conda installed on your device. Recommend miniconda. Create an environment based on the yml files under folder ``envs``.
 
 ```
 conda env create --name <name_of_your_environment> --file=<xx.yml>
@@ -23,7 +23,7 @@ You need to prepare conda environments for stitching, segmentation and quantific
 
 ### BaSiC - illumination correction
 
-Scripts and docker files are adapted from [https://github.com/labsyspharm/basic-illumination](https://github.com/labsyspharm/basic-illumination). 
+Scripts and docker files are adapted from [https://github.com/labsyspharm/basic-illumination](https://github.com/labsyspharm/basic-illumination).
 
 * This step should be run on Linux platform.
 * Docker should be pre-installed.
@@ -87,7 +87,15 @@ conda activate <your_environment_for_quantification>
 python quantification_loop.py -o <output dir> -ch <channel.csv dir> -c 46 # 46 is the number of threads for parallel computation
 ```
 
-If you have super large image then consider decrease the number of threads (minimum 1).
+If you have a super large image then consider decreasing the number of threads (minimum 1).
+
+### Quality control
+
+Use Cylinter for quality control. Please see the instruction on their website: https://labsyspharm.github.io/cylinter/.
+
+Usually we don't need to run all modules (stop at the "logTransform" module).
+
+In order to get csv files from checkpoints, use the script: ``./pipeline/Read_parquet_checkpoint.ipynb``.
 
 ---
 
