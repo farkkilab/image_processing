@@ -62,7 +62,7 @@ if __name__ == '__main__':
                 print("Calculate tiles = {}".format(tiles))
                 labels, _ = model.predict_instances(normalize(img), n_tiles=(tiles, tiles))
                 labels = labels.astype("int32")
-                output_name = OUTPUT_PATH + imageid + "_labels" + ".ome.tiff"
+                output_name = OUTPUT_PATH + imageid + ".ome.tif"
                 tifffile.imsave(output_name, labels)
                 print("Finish image {}".format(IMAGE_PATH))
 

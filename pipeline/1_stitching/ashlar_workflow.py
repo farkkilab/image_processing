@@ -74,7 +74,7 @@ if __name__ == '__main__':
                                                                                   os.path.join(illumination_folder, 
                                                                                                subfolder.split(os.sep)[-1]))
             ashlar_call_illumination(files_to_stitch, 
-                                     os.path.join(output_path, subfolder.split(os.sep)[-1] + ".ome.tiff"), 
+                                     os.path.join(output_path, subfolder.split(os.sep)[-1] + ".ome.tif"), 
                                      flat_field,
                                      dark_field)
     else:
@@ -82,7 +82,7 @@ if __name__ == '__main__':
         pool = multiprocessing.Pool(processes=num_process)
         pool.starmap(ashlar_call, 
                     [(get_file_list(subfolder), 
-                    os.path.join(output_path, subfolder.split(os.sep)[-1] + ".ome.tiff")) for subfolder in subfolders])
+                    os.path.join(output_path, subfolder.split(os.sep)[-1] + ".ome.tif")) for subfolder in subfolders])
         pool.close()
         pool.join()
 
