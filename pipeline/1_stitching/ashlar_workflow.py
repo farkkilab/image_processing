@@ -25,12 +25,12 @@ illumination_folder = "./illumination/Batch_D/"
 def ashlar_call(files_to_stitch, output_path2):
     cmd= "ashlar {} -o\"{}\" --pyramid --filter-sigma 1 -m 30".format(files_to_stitch, output_path2)
     print(cmd)
-    # os.system(cmd)
+    os.system(cmd)
 
 def ashlar_call_illumination(files_to_stitch, output_path2, flat_field_file, dark_field_file):
     cmd= "ashlar {} -o\"{}\" --pyramid --filter-sigma 1 -m 30 --ffp {} --dfp {}".format(files_to_stitch, output_path2, flat_field_file, dark_field_file)
     print(cmd)
-    # os.system(cmd)
+    os.system(cmd)
 
 def get_file_list(folder): 
     files = [f for f in listdir(folder) if search(file_type, f)]
