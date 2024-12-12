@@ -32,33 +32,24 @@ def ashlar_call_illumination(files_to_stitch, output_path2, flat_field_file, dar
     print(cmd)
     os.system(cmd)
 
-def get_file_list(folder): 
-    files = [f for f in listdir(folder) if search(file_type, f)]
-    files_to_stitch=" "
-    for file in files:
-        files_to_stitch = files_to_stitch + folder + os.sep + file + " "
-    print(files_to_stitch)
-    return(files_to_stitch)
+def get_file_list(folder):
+    files = sorted([f for f in os.listdir(folder) if search(file_type, f)])
+    files_to_stitch = " ".join([os.path.join(folder, file) for file in files])
+    print("Files to stitch:", files_to_stitch)
+    return files_to_stitch
 
-def get_all_file_list(folder, illu_folder): 
-    files = [f for f in listdir(folder) if search(file_type, f)]
-    files_to_stitch=" "
-    for file in files:
-        files_to_stitch = files_to_stitch + folder + os.sep + file + " "
-    
-    illu_files = [f for f in listdir(illu_folder)]
-    flat_field = " "
-    dark_field = " "
-    for illu_file in illu_files: 
-        if "-ffp" in illu_file:
-            flat_field = flat_field + illu_folder + os.sep + illu_file + " "
-        elif "-dfp" in illu_file:
-            dark_field = dark_field + illu_folder + os.sep + illu_file + " "
-    
+def get_all_file_list(folder, illu_folder):
+    # Get and sort the files to stitch
+    files = sorted([f for f in os.listdir(folder) if search(file_type, f)])
+    files_to_stitch = " ".join([os.path.join(folder, file) for file in files])
+    # Get and sort the illumination files
+    illu_files = sorted([f for f in os.listdir(illu_folder)])
+    flat_field = " ".join([os.path.join(illu_folder, illu_file) for illu_file in illu_files if "-ffp" in illu_file])
+    dark_field = " ".join([os.path.join(illu_folder, illu_file) for illu_file in illu_files if "-dfp" in illu_file])
     print("Files to stitch:", files_to_stitch)
     print("Flat field files:", flat_field)
     print("Dark field files:", dark_field)
-    return(files_to_stitch, flat_field, dark_field)
+    return files_to_stitch, flat_field, dark_field
 
 
 if __name__ == '__main__':

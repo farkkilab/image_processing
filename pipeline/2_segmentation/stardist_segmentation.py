@@ -29,8 +29,8 @@ from stardist.models import StarDist2D
 
 # input path must only have the images to segment
 # output path should be an empty folder
-INPUT_PATH = "L://Projects//CyCIF//NKI_images_temporary_storage//stitched"
-OUTPUT_PATH = "L://Projects//CyCIF//NKI_images_temporary_storage//stardist_output"
+INPUT_PATH = "./images"
+OUTPUT_PATH = "./masks/" # remember to add / in the end
 # x = 8 # x number of tiles
 # y = 8 # y number of tiles
 arr = os.listdir(INPUT_PATH)
