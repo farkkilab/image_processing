@@ -53,9 +53,8 @@ if __name__ == '__main__':
 
                 IMAGE_PATH = os.path.join(INPUT_PATH, image_name)
                 print("reading image {}".format(IMAGE_PATH))
-                img = tifffile.imread(IMAGE_PATH)
+                img = tifffile.imread(IMAGE_PATH, key=0)
                 print("Finish reading image {}".format(IMAGE_PATH))
-                img = img[0]
                 print("Image has a shape of {}".format(img.shape))
 
                 tiles = int(math.sqrt(int(img.shape[0]*img.shape[1]/(4781712.046875))))
