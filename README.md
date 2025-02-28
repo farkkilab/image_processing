@@ -2,6 +2,8 @@
 
 This repository stores in-house tCyCIF image processing scripts for Färkkilä lab.
 
+You can see detailed usage instructions from the pdf file "Seminar_image_processing_27022025.pdf". 
+
 ![Image processing workflow](./image_workflow_new.png)
 
 The Illumination correction picture is from: A BaSiC Tool for Background and Shading Correction of Optical Microscopy Images, by Tingying Peng, Kurt Thorn, Timm Schroeder, Lichao Wang, Fabian J Theis, Carsten Marr*, Nassir Navab*, Nature Communication 8:14836 (2017). [doi: 10.1038/ncomms14836](http://www.nature.com/articles/ncomms14836).
