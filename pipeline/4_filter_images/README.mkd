@@ -2,7 +2,7 @@
 
 ## Why Filtering Matters
 Microscopy images often suffer from **uneven background illumination**, **autofluorescence**, or **haze**.  
-These artifacts can obscure small, biologically meaningful structures (e.g., puncta, foci, granules) and make downstream quantification unreliable.
+These artifacts can obscure small, biologically meaningful structures and make downstream quantification unreliable.
 
 ## Why It Is Important
 1. **Removes Illumination Gradients**  
@@ -15,8 +15,15 @@ These artifacts can obscure small, biologically meaningful structures (e.g., pun
 ## What Is White Top-Hat Filtering?
 White top-hat is defined as:
 
-### Image Filtering & Quantification
+- **Opening** smooths the image by removing structures smaller than the structuring element.  
+- The structuring element radius (`disk(size)`) can be tuned:
+  - **10 px** for 2×2 binned images (recommended default).
+  - **20 px** for unbinned images.
 
+---
+
+## 🚀 Quick Start
+### Image Filtering & Quantification
 Script: `./filter_image_script.py`
 
 You need:
@@ -25,14 +32,33 @@ You need:
 - A folder with **cell masks**
 - An empty folder to store **CSV outputs**
 
-Run the pipeline as follows:
+# All Use Cases for `filter_image_script.py`
 
 ```bash
+# 1) Full pipeline (filter + quantify)
 conda activate quantification
-
 python filter_image_script.py pipeline \
   --tif_dir <raw_tif_dir> \
   --markers '{"Ki67":7,"DNA1":1,"CD3":4}' \
   --size 10 --workers 8 \
   --mask_dir <mask_dir> \
   --output_dir <output_dir>
+
+
+# 2) Filter only (preprocess images for inspection or later quantification)
+python filter_image_script.py filter \
+  --tif_dir <raw_tif_dir> \
+  --markers '{"Ki67":7,"DNA1":1,"CD3":4}' \
+  --size 10 --workers 8
+
+
+# 3) Quantify only (re-use existing filtered images in <tif_dir>/<MARKER>/)
+python filter_image_script.py quantify \
+  --tif_dir <raw_tif_dir> \
+  --mask_dir <mask_dir> \
+  --output_dir <output_dir>
+
+Note:
+--size 10 → for 2×2 binned images (default), --size 20 → for unbinned images
+--workers controls filtering threads. Lower it if memory is an issue.
+
