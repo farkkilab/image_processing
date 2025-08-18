@@ -2,7 +2,7 @@
 
 ## Why Filtering Matters
 Microscopy images often suffer from **uneven background illumination**, **autofluorescence**, or **haze**.  
-These artifacts can obscure small, biologically meaningful structures and make downstream quantification MORE unreliable.
+These artifacts can obscure small, biologically meaningful structures and make downstream quantification more unreliable.
 
 ## What does it modify?
 1. **Removes Illumination Gradients**  
