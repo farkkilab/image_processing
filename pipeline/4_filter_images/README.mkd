@@ -34,7 +34,7 @@ You need:
 - A folder with **cell masks**
 - An empty folder to store **CSV outputs**
 
-# All Use Cases for `filter_image_script.py`
+### All Use Cases for `filter_image_script.py`
 
 ```bash
 # 1) Full pipeline (filter + quantify)
