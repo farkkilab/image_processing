@@ -14,11 +14,13 @@ These artifacts can obscure small, biologically meaningful structures and make d
 
 ## What Is White Top-Hat Filtering?
 White top-hat is defined as:
-
 - **Opening** smooths the image by removing structures smaller than the structuring element.  
 - The structuring element radius (`disk(size)`) can be tuned:
   - **10 px** for 2×2 binned images (recommended default).
   - **20 px** for unbinned images.
+
+## Example: Before vs After Filtering
+![White top-hat filtering example](./filtered-image_example.png)
 
 ---
 
