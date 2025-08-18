@@ -91,7 +91,7 @@ python quantification_loop.py -o <output dir> -ch <channel.csv dir> -c 46 # 46 i
 
 If you have a super large image then consider decreasing the number of threads (minimum 1).
 
-## White Top-Hat Filtering & Quantification
+### Image Filtering & Quantification
 Script: `./filter_image_script.py`
 You need:
 - A **JSON dictionary** mapping markers to channels (e.g. `{"Ki67":7,"DNA1":1,"CD3":4}`)
@@ -110,7 +110,7 @@ python filter_image_script.py pipeline \
   --mask_dir <mask_dir> \ 
   --output_dir <output_dir>
 ```
-## Quality control
+### Quality control
 
 Use Cylinter for quality control. Please see the instruction on their website: https://labsyspharm.github.io/cylinter/.
 
