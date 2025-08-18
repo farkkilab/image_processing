@@ -107,10 +107,10 @@ python filter_image_script.py pipeline \
   --tif_dir <raw_tif_dir> \
   --markers '{"Ki67":7,"DNA1":1,"CD3":4}' \
   --size 10 --workers 8 \
-  --mask_dir <mask_dir> \
+  --mask_dir <mask_dir> \ 
   --output_dir <output_dir>
-
-### Quality control
+```
+## Quality control
 
 Use Cylinter for quality control. Please see the instruction on their website: https://labsyspharm.github.io/cylinter/.
 
