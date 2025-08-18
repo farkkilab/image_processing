@@ -20,7 +20,7 @@ White top-hat is defined as:
   - **20 px** for unbinned images.
 
 ## Example: Before vs After Filtering
-![White top-hat filtering example](./filtered-image_example.png)
+![White top-hat filtering example](./filtered-image_example.PNG)
 
 ---
 
