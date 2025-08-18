@@ -1,4 +1,3 @@
-
 # White Top-Hat Filtering for Microscopy Image Preprocessing
 
 ## Why Filtering Matters
@@ -14,35 +13,5 @@ These artifacts can obscure small, biologically meaningful structures (e.g., pun
    Measurements of intensity per cell are less biased by background variations.
 
 ## What Is White Top-Hat Filtering?
-White top-hat is defined as: White Top-Hat = Original Image – Morphological Opening(Image, Structuring Element)
-- **Opening** smooths the image by removing structures smaller than the structuring element. The structuring element radius (`disk(size)`) can be tuned:
-  - **10 px** for 2×2 binned images (recommended default).
-   - **20 px** for unbinned images.
-
-## 🚀 Quick Start
-Run the full pipeline (filter + quantify) in one command:
-
-```bash
-python filter_image_script.py pipeline \
-    --tif_dir /data/raw_tifs \
-    --markers '{"Ki67":7,"DNA1":1,"CD3":4}' \
-    --size 10 --workers 8 \
-    --mask_dir /data/masks \
-    --output_dir /results/quantification
-
-## About This Script
-This repository contains a Python script that automates:
-
-1. **Filtering (White Top-Hat)**  
-   - Takes raw multi-channel TIFFs.  
-   - Applies white top-hat filtering channel-by-channel.  
-   - Saves corrected images with the convention:  
-     ```
-     <tif_dir>/<MARKER>/<SLIDE>.ome_<MARKER>_tophat.tif
-     ```
-2. **Quantification**  
-   - Uses pre-computed cell masks (`<mask_dir>/<SLIDE>.tif`) to measure per-cell marker intensities.  
-   - Produces CSV tables (one per slide) with one row per cell and columns for each marker that has been filtered.  
-3. **Pipeline Execution**  
-   - Run **filter + quantify** in one go for convenience.  
+White top-hat is defined as:
 
