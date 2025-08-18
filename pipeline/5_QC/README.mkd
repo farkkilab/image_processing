@@ -3,7 +3,7 @@
 ## QC_automated_thresholds_and_reporting script
 While Cylinter provides ROI cropping and basic filtering, there are some limitations:
 - **Filtering options too restrictive**  
-  You’re limited to ratios like *final DAPI / initial DAPI*, which isn’t ideal if your dataset doesn’t include last-round DAPI.
+  You’re limited to ratios like *final DAPI / initial DAPI*, which isn’t ideal if your dataset doesn’t include important antibodies in the last-round of stainings.
 - **Global vs. slide-specific thresholds**  
   Tools like Mesmer often over-segment. The correct area threshold is usually **dataset-wide**, not slide-specific.
 - **Hard to adjust once applied**  
