@@ -4,7 +4,7 @@
 Microscopy images often suffer from **uneven background illumination**, **autofluorescence**, or **haze**.  
 These artifacts can obscure small, biologically meaningful structures and make downstream quantification unreliable.
 
-## Why It Is Important
+## What does it modify?
 1. **Removes Illumination Gradients**  
    Corrects uneven lighting across the field of view.
 2. **Enhances Small Bright Features**  
