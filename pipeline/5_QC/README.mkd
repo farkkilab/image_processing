@@ -26,7 +26,7 @@ The script also allows a QC impact visualization tool that you can use to report
 ---
 ## Usage with Cylinter
 
-If you want to run Cylinter modules you can benefit from the following sctipts:
+If you want to run more Cylinter modules instead of the custom script you can benefit from the following:
 
 - To extract **CSV files** by aggregating Cylinter checkpoints:  
   `./pipeline/Read_parquet_checkpoint.ipynb`
