@@ -1,1 +1,34 @@
+# Custom QC and Filtering Reporting Tools
 
+## QC_automated_thresholds_and_reporting script
+While Cylinter provides ROI cropping and basic filtering, there are some limitations:
+- **Filtering options too restrictive**  
+  You’re limited to ratios like *final DAPI / initial DAPI*, which isn’t ideal if your dataset doesn’t include last-round DAPI.
+- **Global vs. slide-specific thresholds**  
+  Tools like Mesmer often over-segment. The correct area threshold is usually **dataset-wide**, not slide-specific.
+- **Hard to adjust once applied**  
+  If filters are too aggressive, it’s difficult to re-run them consistently in Cylinter.
+
+Our custom-made script solves these issues by letting you:
+- Apply **cutoffs across all images** based on **any variable(s)** you choose (e.g., area, DAPI intensity, marker expression).  
+- Run **global thresholds** across datasets, instead of slide-by-slide adjustments.  
+- Easily re-run or modify filtering decisions.
+ 
+ ### **QC impact visualization**:  
+The script also allows a QC impact visualization tool that you can use to report the QC impact in your dataset. It displays:
+- Percentage of total cells retained after each filtering step (per sample & dataset)  
+- Final cell counts across images/slides  
+- CSV export of thresholds, dropout, and cell counts  
+- Figure export of QC curves  
+
+![Lost cell plot example](./lost_cell_plot.png)
+
+---
+## Usage with Cylinter
+
+If you want to run Cylinter modules you can benefit from the following sctipts:
+
+- To extract **CSV files** by aggregating Cylinter checkpoints:  
+  `./pipeline/Read_parquet_checkpoint.ipynb`
+- To generate the **QC impact visualization** directly from Cylinter's checkpoints:  
+  `./pipeline/Lost_cell_count_plot.ipynb`
