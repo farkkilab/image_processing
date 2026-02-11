@@ -43,7 +43,7 @@ Scripts and docker files are adapted from [https://github.com/labsyspharm/basic-
 ```
 
 ```
-docker build -t my-basic-image # you should have a dockerfile in the current path
+docker build -t my-basic-image . # you should have a dockerfile in the current path
 docker images # check if your new image is already here
 
 docker run --privileged -it -m 120g --cpus=20 --mount type=bind,source="$(pwd)",target=/data my-basic-image bash # start your docker image
