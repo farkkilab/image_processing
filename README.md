@@ -84,9 +84,9 @@ Project_name/
   ├── tif/      # Contains input TIFF images
   ├── seg/      # Contains segmentation masks
   ├── mesmer.py # Python script for segmentation 
-  ├── Dockerfile4. Run in the Project folder following command to create a docker image: sudo docker build -t my-mesmer-env .
+  ├── Dockerfile
 ```
-
+4. Run in the Project folder following command to create a docker image: ``sudo docker build -t my-mesmer-env .``
 5.  To run the script, first update your Token, the resolution of images and your filtering threshold for background tiles, then use following command:
 ```
 sudo docker run --rm --runtime=nvidia --gpus all \
