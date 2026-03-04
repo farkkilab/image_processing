@@ -74,7 +74,28 @@ conda activate <your_environment_for_stardist>
 python stardist_segmentation.py
 ```
 
-Note: We also provide jupyter notebooks if you want to visualize images while running the analysis: ``./pipeline/stardist_segmentation.ipynb``
+You can use updated mesmer script in ``./pipeline/2_segmentation/updated_mesmer/mesmer.py`` the following way:
+1. Install Docker on Your Workstation
+2. Download DeepCell Docker Environment following github page instructions https://github.com/vanvalenlab/deepcell-tf
+3. Arrange the project directory (ensure you have full access to folder, including writing rights)
+
+```
+Project_name/
+  ├── tif/      # Contains input TIFF images
+  ├── seg/      # Contains segmentation masks
+  ├── mesmer.py # Python script for segmentation 
+  ├── Dockerfile4. Run in the Project folder following command to create a docker image: sudo docker build -t my-mesmer-env .
+```
+
+5.  To run the script, first update your Token, the resolution of images and your filtering threshold for background tiles, then use following command:
+```
+sudo docker run --rm --runtime=nvidia --gpus all \
+  -v /home/user/Desktop/Project_name:/notebooks \
+  -it my-mesmer-env \
+  python mesmer.py
+```
+
+Note: We also provide jupyter notebooks if you want to visualize your mask images while running the analysis: ``./pipeline/stardist_segmentation.ipynb`` and ``./pipeline/2_segmentation/updated_mesmer/check_masks.ipynb``
 
 ### Quantification
 
