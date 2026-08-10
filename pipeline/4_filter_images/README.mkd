@@ -1,4 +1,8 @@
 # White Top-Hat Filtering for Microscopy Image Preprocessing
+## Use-case warnings
+1. Use only in relevant channels (eg CD4, CD8...)
+2. Mind that the filtering modifies the intensity range, so it is better applied eg in phenotyping
+3. Watch the full explanation of how filtering works and how to choose that channels here: https://drive.google.com/file/d/1bqTKw5MHGYWhE2VslIE2FPgyo19BTfp9/view?usp=drivesdk
 
 ## Why Filtering Matters
 Microscopy images often suffer from **uneven background illumination**, **autofluorescence**, or **haze**.  
